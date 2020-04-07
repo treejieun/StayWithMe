@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DOCTYPE엘리먼트 -->
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cs">
+
+	<!-- 문의 목록 -->
+	<select id="list2" resultType="com.jsk.stay.dto.CSDto">
+		select	cs_code,
+				mb_name,
+				mb_id,
+				cs_title,
+				cs_content,
+				cs_date,
+				cs_group,
+				cs_complete
+		from (
+				select	cs_code,
+						mb_name,
+						mb_id,
+						cs_title,
+						cs_content,
+						cs_date,
+						cs_group,
+						cs_complete,
+						row_number() over(order by cs_code desc) as rNum
+				from cs
+				where mb_id = #{mb_id}
+				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by cs_code desc
+	</select>
+	
+	<!-- 문의 내용 -->
+	<select id="content" resultType="com.jsk.stay.dto.CSDto" parameterType="int">
+		select * from cs where cs_code = #{cs_code}
+	</select>
+	
+	<!-- 문의 작성에 저장해줄 mb_name 불러오기 -->
+	<select id="mbWrite" parameterType="com.jsk.stay.dto.MemberDto" resultType="String">
+		select mb_name from member where mb_id = #{mb_id}
+	</select>
+	
+	<!-- 문의 작성내용 DB 저장 -->
+	<insert id="mbWritePro" parameterType="com.jsk.stay.dto.CSDto">
+		insert into cs (
+			cs_code,
+			mb_name,
+			mb_id,
+			cs_title,
+			cs_content,
+			cs_date,
+			cs_group,
+			cs_complete
+			)
+		values (
+			cs_seq.nextval,
+			#{mb_name},
+			#{mb_id},
+			#{cs_title},
+			#{cs_content},
+			SYSDATE,
+			null,
+			'N'
+			)
+	</insert>
+	
+	<!-- 문의 내용 수정 -->
+	<update id="mbModifyPro" parameterType="com.jsk.stay.dto.CSDto">
+		update cs set cs_title = #{cs_title}, cs_content = #{cs_content}
+		where cs_code = #{cs_code}
+	</update>
+	
+	<!-- 문의 삭제 -->
+	<delete id="mbDelete" parameterType="com.jsk.stay.dto.CSDto">
+		delete from cs where cs_code = #{cs_code} or cs_group = #{cs_code}
+	</delete>
+
+	<!-- 답변 작성내용 DB 저장 & 답변한 게시글 답변상태 변경 -->
+	<insert id="adReplyPro" parameterType="com.jsk.stay.dto.CSDto">
+		insert into cs (
+			cs_code,
+			mb_name,
+			mb_id,
+			cs_title,
+			cs_content,
+			cs_date,
+			cs_group,
+			cs_complete
+			)
+		values (
+			cs_seq.nextval,
+			#{mb_name},
+			#{mb_id},
+			#{cs_title},
+			#{cs_content},
+			SYSDATE,
+			#{cs_code},
+			'Y'
+			)
+	</insert>
+	<update id="adReplyPro2" parameterType="com.jsk.stay.dto.CSDto">
+		update cs set cs_group = #{cs_code}, cs_complete = 'Y'
+		where cs_code = #{cs_code}
+	</update>
+	
+	<!-- 답변내용 문의내용 아래에 뿌리기 -->
+	<select id="reply" resultType="com.jsk.stay.dto.CSDto" parameterType="int">
+		select * from cs where cs_group = #{cs_group}
+	</select>
+	
+	<!-- 답변내용 수정(이전 답변 내용에 + 새로운 내용으로 DB에 넣어줌) -->
+	<update id="adModifyPro" parameterType="com.jsk.stay.dto.CSDto">
+		update cs set cs_title = #{cs_title}, cs_content = #{cs_content}
+		where cs_code = #{cs_code}
+	</update>
+	
+	<!-- 답변 삭제시 답변글만 삭제되고 문의글 상태가 답변대기로 다시 바뀜 -->
+	<delete id="adDelete" parameterType="com.jsk.stay.dto.CSDto">
+		delete from cs where cs_code = #{cs_code} 
+	</delete>
+	<update id="adDelete2" parameterType="com.jsk.stay.dto.CSDto">
+		update cs set cs_group = null, cs_complete = 'N'
+		where cs_code = #{cs_group}
+	</update>
+	
+	<!-- 페이지 -->
+	<select id="listPage" resultType="com.jsk.stay.dto.CSDto" parameterType="com.jsk.stay.dto.Criteria">
+		select	cs_code,
+				mb_name,
+				mb_id,
+				cs_title,
+				cs_content,
+				cs_date,
+				cs_group,
+				cs_complete
+		from (
+				select	cs_code,
+						mb_name,
+						mb_id,
+						cs_title,
+						cs_content,
+						cs_date,
+						cs_group,
+						cs_complete,
+						row_number() over(order by cs_code desc) as rNum
+				from cs
+				where cs_group is null or cs_group = cs_code
+				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by cs_code desc
+	</select>
+	
+	<select id="listCount" resultType="int" parameterType="com.jsk.stay.dto.CSDto">
+
+		select count(cs_code)
+		from cs
+		where cs_code > 0 
+		<if test='_parameter != null'>
+		and mb_id = #{mb_id}
+		</if>
+
+	</select>
+</mapper>

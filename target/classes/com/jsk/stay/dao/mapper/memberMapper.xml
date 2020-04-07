@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DOCTYPE엘리먼트 -->
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="member">
+	<!-- 회원가입 -->
+	<insert id="join" parameterType="com.jsk.stay.dto.MemberDto">
+		insert into member (mb_id, mb_pwd, mb_name, mb_birthdate, mb_sex, mb_email, mb_phone, mb_join_date, mb_delete_date, mb_temppwd, mb_profile,mb_grade)
+		values(
+		#{mb_id},
+		#{mb_pwd},
+		#{mb_name},
+		#{mb_birthdate},
+		#{mb_sex},
+		#{mb_email},
+		#{mb_phone},
+		SYSDATE,
+		null,
+		null,
+		null,
+		'ROLE_GUEST'
+		)
+	</insert>
+	
+	<select id="idCheck" parameterType="com.jsk.stay.dto.MemberDto" resultType="String">
+		select mb_id from member where mb_id = #{mb_id}
+	</select>
+	
+	<select id="phoneCheck" parameterType="com.jsk.stay.dto.MemberDto" resultType="String">
+		select mb_phone from member where mb_phone = #{mb_phone}
+	</select>
+	
+	<select id="memberList" resultType="com.jsk.stay.dto.MemberDto" parameterType="com.jsk.stay.dto.MemberDto">
+		select	mb_id,
+				mb_name,
+				mb_birthdate,
+				mb_sex,
+				mb_email,
+				mb_phone,
+				mb_join_date,
+				mb_delete_date,
+				mb_grade
+		from (
+				select	mb_id,
+						mb_name,
+						mb_birthdate,
+						mb_sex,
+						mb_email,
+						mb_phone,
+						mb_join_date,
+						mb_delete_date,
+						mb_grade,
+						row_number() over(order by mb_join_date desc) as rNum
+				from member
+				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by mb_join_date desc
+	</select>
+
+	<select id="listCount" resultType="int" parameterType="com.jsk.stay.dto.MemberDto">
+		select count(mb_id)
+		from member
+	</select>
+</mapper>

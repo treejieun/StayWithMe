@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+ -->
+ <beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                 http://www.springframework.org/schema/beans/spring-beans.xsd
+                                 http://www.springframework.org/schema/security
+                                 http://www.springframework.org/schema/security/spring-security.xsd">
+    
+    
+    <http pattern="/ckedit" security ="none"/>
+    <http pattern="/write" security ="none"/>
+    
+    <http auto-config='true' use-expressions = "true">
+    	<headers>  <!-- X-Frame-Options : deny 해결(iframe사용시) -->
+        	<frame-options disabled="true"></frame-options>
+        </headers>
+        	
+    	<intercept-url pattern="/" access="permitAll" />
+    	<intercept-url pattern="/resources/**" access="permitAll" />
+		<intercept-url pattern="/idCheck" access="permitAll" />
+		<intercept-url pattern="/phoneCheck" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/sendSms" access="permitAll" />
+		<intercept-url pattern="/socialLogin" access="permitAll" />
+		<intercept-url pattern="/login_duplicate" access="permitAll" />
+		<intercept-url pattern="/index" access="permitAll" />
+		<intercept-url pattern="/html/**" access="permitAll" />
+		<intercept-url pattern="/style/**" access="permitAll" />
+		<intercept-url pattern="/payments/complete/" access="permitAll" />
+		<intercept-url pattern="/js/**" access="permitAll" />
+		<intercept-url pattern="/img/**" access="permitAll" />
+		<intercept-url pattern="/upImg/**" access="permitAll" />
+		<intercept-url pattern="/icheck-1.x/**" access="permitAll" />
+		<intercept-url pattern="/acmList" access="permitAll" />
+		<intercept-url pattern="/acmInfo" access="permitAll" />
+		<intercept-url pattern="/header" access="permitAll" />
+		<intercept-url pattern="/wishList" access="permitAll" />
+		<intercept-url pattern="/footer" access="permitAll" />
+    	<intercept-url pattern="/editUpload/**" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csMember" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csMbWrite" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csContent" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csMbWritePro" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csMbModify" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csMbModifyPro" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csMbDelete" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+    	<intercept-url pattern="/csAdReply" access="hasAnyRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/csAdReplyPro" access="hasAnyRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/csAdModify" access="hasAnyRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/csAdModifyPro" access="hasAnyRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/csAdDelete" access="hasAnyRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/adminMain" access="hasAnyRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/navbar" access="hasAnyRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/csAdmin" access="hasAnyRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/memberjoin" access="isAnonymous()" />
+		<intercept-url pattern="/memberjoinpro" access="isAnonymous()" />
+		<intercept-url pattern="/nlogin" access="isAnonymous()" />
+		<intercept-url pattern="/socialPhone" access="isAnonymous()" />
+		<intercept-url pattern="/findIdPwd" access="isAnonymous()" />
+		<intercept-url pattern="/findIdSuccess" access="isAnonymous()" />
+		<intercept-url pattern="/findPwd" access="isAnonymous()" />
+		<intercept-url pattern="/findIdCheck" access="isAnonymous()" />
+		<intercept-url pattern="/findPwd_idCheck" access="isAnonymous()" />
+		<intercept-url pattern="/findPwd_sendEmail" access="isAnonymous()" />
+		<intercept-url pattern="/myPagePwd" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/myPageEmail" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/myPagePhone" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/myPageAddress" access="hasAnyRole('ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/addAcm" access="hasAnyRole('ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/write" access="hasAnyRole('ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/hostJoin" access="hasAnyRole('ROLE_GUEST','ROLE_ADMIN')" />
+		<intercept-url pattern="/hostBoard" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/checkPwd" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/EditInformation" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/myPageProfile" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/logout" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/ckedit" access="hasAnyRole('ROLE_GUEST','ROLE_HOST','ROLE_ADMIN')" />
+		<intercept-url pattern="/**" access="authenticated" />
+		
+		<form-login login-page="/login" 
+					username-parameter="mb_id" 
+					password-parameter="mb_pwd"															
+					default-target-url="/index?loginS=1"
+					authentication-failure-url="/login?error=1"
+					always-use-default-target='true'
+					/>		
+		 
+		 <!--  
+		<logout invalidate-session="true" logout-url="/logout"   logout-success-url="/login?logout=1" /> 
+		-->
+		<logout invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" 
+			logout-url="/logout" logout-success-url="/index?logout=1" />
+		<remember-me key="wmoskey" token-validity-seconds="2419200"/> <!-- 4 주 -->
+			   
+		<csrf />
+		
+	</http>
+	
+	   	
+<!--
+	<authentication-manager>
+	    <authentication-provider>
+	        <user-service>
+	            <user name="guest" password="guest" authorities="ROLE_USER"/>    
+	        </user-service>
+	    </authentication-provider>
+	</authentication-manager>
+	-->	
+ 	
+ 	<!--  	 
+ 	<beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+ 	--> 
+    
+	<authentication-manager>   		
+	    <authentication-provider user-service-ref="customUserDetailsService">
+			<password-encoder ref="passwordEncoder"/> <!-- 패스워드 암호화 -->
+		</authentication-provider>	   
+	</authentication-manager>	
+    
+    <beans:bean id="customUserDetailsService" class="com.jsk.stay.security.CustomUserDetailsService" />  
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>        
+
+</beans:beans>

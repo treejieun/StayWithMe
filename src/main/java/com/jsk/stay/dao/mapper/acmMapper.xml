@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DOCTYPE엘리먼트 -->
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="acm">
+	<select id="acmList" resultType="com.jsk.stay.dto.AccommodationDto" parameterType="hashMap">
+		select	mb_id,
+				acm_code,
+				acm_info,
+				acm_charge,
+				acm_availdate,
+				acm_checkin_time,
+				acm_checkout_time,
+				acm_type,
+				acm_room_type,
+				acm_guest_num,
+				acm_room_num,
+				acm_bath_num,
+				acm_area,
+				acm_bedding,
+				acm_address,
+				acm_add_detail,
+				acm_zip,
+				acm_title,
+				acm_thumbnail
+		from (
+				select	mb_id,
+						acm_code,
+						acm_info,
+						acm_charge,
+						acm_availdate,
+						acm_checkin_time,
+						acm_checkout_time,
+						acm_type,
+						acm_room_type,
+						acm_guest_num,
+						acm_room_num,
+						acm_bath_num,
+						acm_area,
+						acm_bedding,
+						acm_address,
+						acm_add_detail,
+						acm_zip,
+						acm_title,
+						acm_thumbnail,
+						row_number() over(order by acm_code desc) as rNum
+						from accommodation
+				<choose>
+					<when test='location != "전체"'>
+						where substr(acm_address, 1, 2) = #{location}
+					</when>
+					<when test='location == "전체"'>
+						where mb_id is not null
+					</when>
+				</choose>
+			) mp
+		where rNum between #{cri.rowStart} and #{cri.rowEnd}
+		order by acm_code desc
+	</select>
+	
+	<select id="acmListCount" resultType="int" parameterType="String">
+		select count(acm_code)
+		from accommodation
+		<choose>
+			<when test='!_parameter.equals("전체")'>
+				where substr(acm_address, 1, 2) = #{location}
+			</when>
+			<when test='_parameter.equals("전체")'>
+				where mb_id is not null
+			</when>
+		</choose>
+		order by acm_code desc
+	</select>
+	
+	<select id="accommodation" resultType="com.jsk.stay.dto.AccommodationDto" parameterType="int">
+		select * from accommodation where acm_code = #{acm_code}
+	</select>
+	
+	<select id="amenity" resultType="com.jsk.stay.dto.AcmSubDto" parameterType="int">
+		select acm_amenity from acm_sub where acm_code = #{acm_code} and acm_amenity is not null
+	</select>
+	
+	<select id="rule" resultType="com.jsk.stay.dto.AcmSubDto" parameterType="int">
+		select acm_rule from acm_sub where acm_code = #{acm_code} and acm_rule is not null
+	</select>
+</mapper>

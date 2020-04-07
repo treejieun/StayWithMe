@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace = "com.jsk.stay.dao.IDao">
+	<select id = "loginDao" parameterType = "String" resultType = "com.jsk.stay.dto.MemberDto">
+		SELECT * FROM MEMBER WHERE mb_id = #{mb_id}
+	</select>
+	<select id= "checkPW" parameterType = "String" resultType = "String">
+		SELECT MB_PWD FROM MEMBER WHERE mb_id = #{mb_id}
+	</select>
+	<select id = "information" parameterType = "String" resultType = "com.jsk.stay.dto.MemberDto">
+		SELECT * FROM MEMBER WHERE mb_id = #{mb_id}
+	</select>
+	<select id = "information1" parameterType = "String" resultType = "com.jsk.stay.dto.HostDto">
+		SELECT * FROM HOST WHERE mb_id = #{mb_id}
+	</select>
+</mapper>

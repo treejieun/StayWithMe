@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DOCTYPE엘리먼트 -->
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="admin">
+	<select id="acmArticle" resultType="com.jsk.stay.dto.AccommodationDto" parameterType="com.jsk.stay.dto.Criteria">
+		select	acm_code,
+				acm_title,
+				acm_address,
+				acm_add_detail,
+				acm_type,
+				mb_id
+		from	(
+				select	acm_code,
+						acm_title,
+						acm_address,
+						acm_add_detail,
+						acm_type,
+						mb_id,
+						row_Number() over(order by acm_code desc) as rNum
+				from accommodation
+				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by acm_code desc
+	</select>
+	
+	<select id="acmCount" resultType="int">
+		select count(acm_code)
+		from accommodation
+	</select>
+	
+	<select id="totalMember" resultType="int">
+		select count(mb_id)
+		from member
+	</select>
+	
+	<select id="totalACM" resultType="int">
+		select count(acm_code)
+		from accommodation
+	</select>
+	
+	<select id="womanCount" resultType="int">
+		select count(mb_sex)
+		from member
+		where mb_sex = 'F'
+	</select>
+	
+	<select id="manCount" resultType="int">
+		select count(mb_sex)
+		from member
+		where mb_sex = 'M'
+	</select>
+	
+	<select id="guestCount" resultType="int">
+		select count(mb_grade)
+		from member
+		where mb_grade = 'ROLE_GUEST'
+	</select>
+	
+	<select id="hostCount" resultType="int">
+		select count(mb_grade)
+		from member
+		where mb_grade = 'ROLE_HOST'
+	</select>
+	
+	<resultMap type="HashMap" id="monthMap">
+		<id column="month" property="month"/>
+		<id column="count" property="count"/>
+	</resultMap>
+	<select id="month" resultType="hashMap">
+		select to_char(mb_join_date, 'YY/MM') as month, count(*) as count
+		from member
+		where mb_join_date &gt; '19/12/31' and mb_join_date &lt; '21/01/01'
+		GROUP BY to_char(mb_join_date, 'YY/MM')
+	</select>
+	
+	<resultMap type="HashMap" id="localMap">
+		<id column="local" property="local"/>
+		<id column="count" property="count"/>
+	</resultMap>
+	<select id="local" resultType="hashMap">
+		select substr(acm_address, 1, 2) as local, count(*) as count
+		from accommodation
+		group by(substr(acm_address, 1, 2))
+	</select>
+</mapper>

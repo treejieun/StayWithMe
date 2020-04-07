@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace = "reservation">
+	<select id="reservationImport" parameterType = "int" resultType = "com.jsk.stay.dto.AccommodationDto">
+		select * from accommodation where acm_code = #{acm_code}
+	</select>
+	
+	<insert id="reservationIn" parameterType = "com.jsk.stay.dto.ReservationDto">
+		insert into reservation (RES_CODE, MB_ID, ACM_CODE, RES_PAY_METHOD, RES_AMOUNT, RES_PAY_DATE, RES_GUEST_NUM, RES_CHECKIN_DATE, RES_CHECKOUT_DATE, RES_CONFIRM, ACM_TITLE, ACM_ADDRESS, ACM_ADD_DETAIL, RES_CARD_NAME)
+		values(#{res_code},#{mb_id},#{acm_code},#{res_pay_method},#{res_amount},SYSDATE,#{res_guest_num},#{res_checkin_date},#{res_checkout_date},null,#{acm_title},#{acm_address},#{acm_add_detail},#{card_name})
+	</insert>
+	
+	<select id = "reservationList" parameterType = "String" resultType = "com.jsk.stay.dto.ReservationDto">
+		SELECT * FROM RESERVATION WHERE MB_ID = #{mb_id} order by RES_CHECKIN_DATE desc
+	</select>
+	
+	<select id="resReceipt" parameterType = "String" resultType = "com.jsk.stay.dto.ReservationDto">
+		SELECT * FROM RESERVATION WHERE RES_CODE = #{res_code}
+	</select>
+	<select id = "resAcmDate" parameterType = "int" resultType = "String">
+		SELECT ACM_AVAILDATE FROM ACCOMMODATION WHERE ACM_CODE = #{acm_code}
+	</select>
+	
+	<update id = "reservationAcm" parameterType = "com.jsk.stay.dto.AccommodationDto">
+		UPDATE ACCOMMODATION SET ACM_AVAILDATE = #{acm_availdate} WHERE acm_code = #{acm_code}
+	</update>
+</mapper>

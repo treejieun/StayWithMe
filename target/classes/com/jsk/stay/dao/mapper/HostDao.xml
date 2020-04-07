@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.jsk.stay.dao.IHostDao">
+	<insert id="writeDao" parameterType="com.jsk.stay.dto.HostDto">
+		INSERT INTO HOST (mb_id, ho_address, ho_add_detail,ho_zip, ho_account,ho_acc_num)
+		VALUES (#{mb_id}, #{ho_address}, #{ho_add_detail},#{ho_zip}, #{ho_account}, #{ho_acc_num})
+	</insert>
+	<update id="gradeUpdate" parameterType = "com.jsk.stay.dto.HostDto">
+		update member set mb_grade = 'ROLE_HOST' where mb_id = #{mb_id}
+	</update>
+</mapper>	
