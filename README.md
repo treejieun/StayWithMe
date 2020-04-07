@@ -3,7 +3,7 @@
   * http://18.188.65.160:8080/stay/index
   
  ## 포트폴리오
-![슬라이드2](https://user-images.githubusercontent.com/59001526/78629025-dfb60480-78d0-11ea-88ab-608bd5b7bdec.PNG)
+<center>![슬라이드2](https://user-images.githubusercontent.com/59001526/78629025-dfb60480-78d0-11ea-88ab-608bd5b7bdec.PNG)</center>
 ![슬라이드3](https://user-images.githubusercontent.com/59001526/78629027-dfb60480-78d0-11ea-910a-eb44e38cdcc1.PNG)
 ![슬라이드4](https://user-images.githubusercontent.com/59001526/78629029-e04e9b00-78d0-11ea-9163-3a709c583f4b.PNG)
 ![슬라이드5](https://user-images.githubusercontent.com/59001526/78629032-e0e73180-78d0-11ea-9cc1-e8f2e59aaa26.PNG)
