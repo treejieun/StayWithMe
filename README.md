@@ -1,5 +1,6 @@
 # Portfolio
-![슬라이드1](https://user-images.githubusercontent.com/59001526/78629024-de84d780-78d0-11ea-8a51-96ec29138362.PNG)
+## AWS를 이용한 프로젝트 임시 배포
+  *http://18.188.65.160:8080/stay/index
 ![슬라이드2](https://user-images.githubusercontent.com/59001526/78629025-dfb60480-78d0-11ea-88ab-608bd5b7bdec.PNG)
 ![슬라이드3](https://user-images.githubusercontent.com/59001526/78629027-dfb60480-78d0-11ea-910a-eb44e38cdcc1.PNG)
 ![슬라이드4](https://user-images.githubusercontent.com/59001526/78629029-e04e9b00-78d0-11ea-9163-3a709c583f4b.PNG)
