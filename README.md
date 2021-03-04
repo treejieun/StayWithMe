@@ -1,6 +1,6 @@
 # Portfolio
  ## AWS를 이용한 프로젝트 임시 배포
-  * http://18.188.65.160:8080/stay/index
+
  
  ## 포트폴리오
 ![슬라이드2](https://user-images.githubusercontent.com/59001526/78629025-dfb60480-78d0-11ea-88ab-608bd5b7bdec.PNG)
